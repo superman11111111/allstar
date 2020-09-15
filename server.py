@@ -3,6 +3,13 @@ from astar import astar
 from flask import Flask, render_template, request
 app = Flask(__name__)
 
+
+def d2tod1(list_of_nodes, dim):
+  rb = []
+  for n in list_of_nodes:
+    rb.append(dim[1]*n.x+n.y)
+  return rb
+
 @app.route('/astar', methods=['POST'])
 def handle_astar():
   import json
@@ -10,16 +17,10 @@ def handle_astar():
   m = r['m']
   sN = r['start']
   eN = r['end']
-  print(f"y={len(m)}, x={len(m[0])}")
-  route = astar(m, sN, eN)
+  route, explored, o = astar(m, sN, eN)
+  dim = (len(m), len(m[0]))
   print(route)
-  path = []
-  for n in route:
-    print((len(m[0])+1)*n.x)
-    path.append((len(m[0])+1)*n.x+n.y-n.x)
-  return json.dumps({'path': path})
-  return str((m, sN)) 
-  return hello_world()
+  return json.dumps({'path': d2tod1(route, dim), 'explored': d2tod1(explored, dim), 'open': d2tod1(o, dim)})
   
 
 @app.route('/')

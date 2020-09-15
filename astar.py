@@ -39,11 +39,14 @@ class Node():
 
 
   def neighbors(self):
-    global dim, explored
+    global dim, explored, mm
     self._neighbors = []
+    print(len(mm), len(mm[0]))
     for i in range(self.y-1, self.y+2):
       for j in range(self.x-1, self.x+2):
         if i < 0 or i > dim[1] or j < 0 or j > dim[0] or (i == self.y and j == self.x):
+          continue
+        if mm[j][i]==1:
           continue
         n = Node(j, i, parent=self)
         if n in explored:
@@ -85,7 +88,8 @@ def astar(m=gen(), start=(1,1), end=(3,3)):
     start: Start Node (List length 2)
     end: End Node (List length 2)
   """
-  global explored, dim, sN, eN, XYStart, XYEnd
+  global explored, dim, sN, eN, XYStart, XYEnd, mm
+  mm = m
   XYStart = start
   XYEnd = end
   dim = (len(m), len(m[0])) # Y, X
@@ -108,7 +112,7 @@ def astar(m=gen(), start=(1,1), end=(3,3)):
       while c.parent:
         path.append(c)
         c = c.parent
-      return path
+      return path, explored, o
     o.remove(c)
     for n in c.neighbors():
       o.add(n)

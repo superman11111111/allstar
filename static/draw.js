@@ -12,6 +12,8 @@ var pixelsY = 0
 let startPx = 0
 let endPx = 0
 var path = []
+var explored = []
+var o = []
 
 const resize = () => {
     width = window.innerWidth;
@@ -27,7 +29,8 @@ const resize = () => {
             grid.push([x * (pixelSize + padding), y * (pixelSize + padding), pixelSize, pixelSize, 0]);
         }
     }
-    button.style.left = width - 90 + "px"
+    button.style.left = width - 120 - 20 + "px"
+    // button.style.borderColor = "red red red red"
     drawGrid()
 }
 const drawGrid = () => {
@@ -42,6 +45,8 @@ const drawGrid = () => {
         if (grid[i][4]) ctx.fillStyle = "#000"
         if (i == pixelsX + 1) { ctx.fillStyle = "#0ff"; startPx = i }
         if (i == grid.length - pixelsX - 2) { ctx.fillStyle = "#0ff"; endPx = i }
+        if (explored.includes(i)) ctx.fillStyle = "#0f0"
+        if (o.includes(i)) ctx.fillStyle = "#00f"
         if (path.includes(i)) ctx.fillStyle = "#ff0"
         ctx.fillRect(grid[i][0], grid[i][1], grid[i][2], grid[i][3]);
     }
@@ -93,7 +98,10 @@ button.addEventListener('click', function (e) {
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4) {
             console.log(xhr.responseText)
-            path = JSON.parse(xhr.responseText)['path']
+            j = JSON.parse(xhr.responseText)
+            path = j['path']
+            explored = j['explored']
+            o = j['open']
             // console.log(path)
         }
     }
