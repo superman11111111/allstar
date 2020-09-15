@@ -14,8 +14,13 @@ Web based GUI where one can draw a obstacle and the program finds the quickest p
 
 ### ToDo:
 
-* Fix obstacle ignore problem 
+* Implement animation for good boy points
 
+### DONE:
+
+* implement command line solution 
+* Change x and y axis 
+* Fix obstacle problem
 
 ### How does A* work?
 
