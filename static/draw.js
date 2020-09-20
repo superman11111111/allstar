@@ -2,9 +2,16 @@ let grid = []
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const button = document.getElementById('button')
-const pixelSize = 32
+const slider = document.getElementById('slider')
+const options = document.getElementById('options')
+
+const fps = document.getElementById('fps')
+const pixelSize = 8
 const gridSize = 1 // Setting this to 0 crashes firefox (bug?)
-const padding = 2
+const padding = 0
+var brushSize = 2
+let frame = 0
+let start = Date.now()
 const mousePosition = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 var mouseDown = false;
 var pixelsX = 0
@@ -26,16 +33,29 @@ const resize = () => {
     grid = [];
     for (var y = 0; y < pixelsY; y++) {
         for (var x = 0; x < pixelsX; x++) {
-            grid.push([x * (pixelSize + padding), y * (pixelSize + padding), pixelSize, pixelSize, 0]);
+            grid.push(
+                [x * (pixelSize + padding),
+                y * (pixelSize + padding),
+                    pixelSize, pixelSize, 0]);
         }
     }
     button.style.left = width - 120 - 20 + "px"
+    options.style.left = width - 120 - 80 + "px"
+    fps.style.left = width - 120 - 20 + "px"
+    // slider.style.top = "100px"
+
     // button.style.borderColor = "red red red red"
     drawGrid()
 }
 const drawGrid = () => {
+
+    // console.log(slider.value)
     for (var i = 0; i < grid.length; i++) {
-        if (mousePosition.x >= grid[i][0] & mousePosition.x < grid[i][0] + pixelSize & mousePosition.y >= grid[i][1] & mousePosition.y < grid[i][1] + pixelSize & mouseDown) {
+        if (mousePosition.x >= grid[i][0] - (pixelSize * brushSize) &
+            mousePosition.x < grid[i][0] + (pixelSize * brushSize) &
+            mousePosition.y >= grid[i][1] - (pixelSize * brushSize) &
+            mousePosition.y < grid[i][1] + (pixelSize * brushSize) &
+            mouseDown) {
             grid[i][4] = 1
         }
     }
@@ -53,6 +73,10 @@ const drawGrid = () => {
 }
 
 const draw = () => {
+    frame++
+    let f = Math.floor(frame / (Date.now() - start) * 1000)
+    fps.innerHTML = f + " fps"
+
     drawGrid();
     requestAnimationFrame(draw);
 }
@@ -75,7 +99,6 @@ button.addEventListener('click', function (e) {
     xhr.open("POST", '/astar', true)
     xhr.setRequestHeader('Content-Type', 'application/json')
     m = new Object();
-    // console.log(grid[startPx])
     let start = []
     let end = []
     for (let i = 0; i < grid.length; i++) {
@@ -87,8 +110,8 @@ button.addEventListener('click', function (e) {
         else m[ind].push(e[4])
     }
     m = Object.values(m) // format: y, x
-    console.log(start, end)
-    console.log(m)
+    // console.log(start, end)
+    // console.log(m)
     xhr.send(JSON.stringify({
         "m": m,
         "start": start,
@@ -112,4 +135,11 @@ button.addEventListener('click', function (e) {
         button.style.backgroundColor = origColor;
         button.style.borderRadius = "2px";
     }, 300)
+
 })
+// slider.ondrag
+slider.onchange = () => {
+    brushSize = slider.value
+    // slider.text
+    // console.log(slider.value)
+}

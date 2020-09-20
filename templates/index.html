@@ -41,12 +41,52 @@
       -webkit-user-select: none;
       -o-user-select: none;
     }
+
+    #options {
+      padding: 5px;
+      background-color: white;
+      /* width: 200px; */
+      /* height: 50px; */
+      position: relative;
+      display: flex;
+      /* border-radius: 2px; */
+      /* justify-content: center; */
+      /* align-items: center; */
+
+    }
+
+    #fps {
+      /* top: 300px; */
+      /* margin-top: 100px; */
+      /* padding: 5px; */
+      background-color: white;
+      width: 100px;
+      height: 20px;
+      font-size: 12px;
+      position: relative;
+      display: flex;
+      /* border-radius: 2px; */
+      justify-content: center;
+      align-items: center;
+
+      user-select: none;
+      -moz-user-select: none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      -o-user-select: none;
+
+    }
   </style>
 </head>
 
 <body>
   <canvas width="100" height="100" id="canvas"></canvas>
   <div id="button">Start Pathfinding!</div>
+  <div id="options">
+    <input type="range" id="slider" value="2" min="1" max="10" oninput="brushsize.value = slider.value">
+    <output id="brushsize">2</output>
+  </div>
+  <div id="fps">0</div>
   <!-- {% autoescape false %} {{ grid }} {% endautoescape %} -->
 </body>
 <script src="static/draw.js"></script>
