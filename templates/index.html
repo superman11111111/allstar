@@ -8,7 +8,6 @@
 
   <style>
     body {
-      /* padding: 10px; */
       background: #101010;
       margin: 0;
       padding: 0;
@@ -23,17 +22,14 @@
       height: 100%;
     }
 
-    #button {
-      padding: 5px;
+    div {
+      /* padding: 5px; */
       background-color: white;
-      width: 120px;
-      height: 50px;
+      border-radius: 2px;
       font-size: 12px;
       position: relative;
-      display: flex;
-      border-radius: 2px;
-      justify-content: center;
-      align-items: center;
+      display: block;
+      float: right;
 
       user-select: none;
       -moz-user-select: none;
@@ -43,51 +39,51 @@
     }
 
     #options {
-      padding: 5px;
-      background-color: white;
-      /* width: 200px; */
-      /* height: 50px; */
-      position: relative;
-      display: flex;
-      /* border-radius: 2px; */
-      /* justify-content: center; */
-      /* align-items: center; */
+      width: 120px;
+      height: 160px;
+    }
 
+    #button {
+      /* background-color: #505050; */
+      width: 120px;
+      height: 50px;
+      display: flex;
+      border-radius: 3px;
+      justify-content: center;
+      align-items: center;
     }
 
     #fps {
-      /* top: 300px; */
-      /* margin-top: 100px; */
-      /* padding: 5px; */
-      background-color: white;
-      width: 100px;
-      height: 20px;
-      font-size: 12px;
-      position: relative;
+      /* background-color: transparent; */
+      width: 40px;
+      height: 40px;
       display: flex;
-      /* border-radius: 2px; */
       justify-content: center;
       align-items: center;
+    }
 
-      user-select: none;
-      -moz-user-select: none;
-      -khtml-user-select: none;
-      -webkit-user-select: none;
-      -o-user-select: none;
+    #slidiv {
+      /* background-color: #505050; */
+      width: 120px;
+      height: 70px;
+    }
 
+    #slider {
+      width: 110px;
     }
   </style>
 </head>
 
 <body>
   <canvas width="100" height="100" id="canvas"></canvas>
-  <div id="button">Start Pathfinding!</div>
   <div id="options">
-    <input type="range" id="slider" value="2" min="1" max="10" oninput="brushsize.value = slider.value">
-    <output id="brushsize">2</output>
+    <div id="fps">0</div>
+    <div id="slidiv">
+      <p>Brush Size: <output id="brushsize">2</output></p>
+      <input type="range" id="slider" value="2" min="1" max="10" oninput="brushsize.value = slider.value">
+    </div>
+    <div id="button">Start Pathfinding!</div>
   </div>
-  <div id="fps">0</div>
-  <!-- {% autoescape false %} {{ grid }} {% endautoescape %} -->
 </body>
 <script src="static/draw.js"></script>
 

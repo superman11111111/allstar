@@ -27,7 +27,7 @@ const resize = () => {
     height = window.innerHeight;
     pixelsY = Math.floor(height / ((pixelSize + padding) * gridSize))
     pixelsX = Math.floor(width / ((pixelSize + padding) * gridSize))
-    console.log(pixelsX, pixelsY)
+    // console.log(pixelsX, pixelsY)
     canvas.width = width
     canvas.height = height
     grid = [];
@@ -39,9 +39,9 @@ const resize = () => {
                     pixelSize, pixelSize, 0]);
         }
     }
-    button.style.left = width - 120 - 20 + "px"
-    options.style.left = width - 120 - 80 + "px"
-    fps.style.left = width - 120 - 20 + "px"
+    // button.style.left = width - 120 - 20 + "px"
+    // options.style.left = width - 120 - 80 + "px"
+    // fps.style.left = width - 120 - 20 + "px"
     // slider.style.top = "100px"
 
     // button.style.borderColor = "red red red red"
@@ -120,7 +120,7 @@ button.addEventListener('click', function (e) {
 
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4) {
-            console.log(xhr.responseText)
+            // console.log(xhr.responseText)
             j = JSON.parse(xhr.responseText)
             path = j['path']
             explored = j['explored']
