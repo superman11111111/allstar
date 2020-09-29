@@ -18,6 +18,7 @@ Web based GUI where one can draw an obstacle and the program finds the quickest 
 
 ### ToDo:
 
+* Remove 2D to 1D conversion by implementing 2D grid solution for JS UI
 * Implement animation for good boy points
 
 ### DONE:

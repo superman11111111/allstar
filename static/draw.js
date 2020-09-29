@@ -9,7 +9,7 @@ const fps = document.getElementById('fps')
 const pixelSize = 8
 const gridSize = 1 // Setting this to 0 crashes firefox (bug?)
 const padding = 0
-var brushSize = 2
+let brushSize = 2
 let frame = 0
 let start = Date.now()
 const mousePosition = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
@@ -39,25 +39,17 @@ const resize = () => {
                     pixelSize, pixelSize, 0]);
         }
     }
-    // button.style.left = width - 120 - 20 + "px"
-    // options.style.left = width - 120 - 80 + "px"
-    // fps.style.left = width - 120 - 20 + "px"
-    // slider.style.top = "100px"
-
-    // button.style.borderColor = "red red red red"
     drawGrid()
 }
 const drawGrid = () => {
-
-    // console.log(slider.value)
     for (var i = 0; i < grid.length; i++) {
-        if (mousePosition.x >= grid[i][0] - (pixelSize * brushSize) &
-            mousePosition.x < grid[i][0] + (pixelSize * brushSize) &
-            mousePosition.y >= grid[i][1] - (pixelSize * brushSize) &
-            mousePosition.y < grid[i][1] + (pixelSize * brushSize) &
-            mouseDown) {
-            grid[i][4] = 1
-        }
+        if (mouseDown &
+            grid[i][4] == 0 &
+            grid[i][0] - (pixelSize + padding) * (brushSize) < mousePosition.x &
+            grid[i][0] + (pixelSize + padding) * (brushSize) > mousePosition.x &
+            grid[i][1] - (pixelSize + padding) * (brushSize) < mousePosition.y &
+            grid[i][1] + (pixelSize + padding) * (brushSize) > mousePosition.y
+        ) grid[i][4] = 1
     }
     for (var i = 0; i < grid.length; i++) {
         ctx.globalAlpha = 1;
@@ -75,6 +67,8 @@ const drawGrid = () => {
 const draw = () => {
     frame++
     let f = Math.floor(frame / (Date.now() - start) * 1000)
+    // Is that how they do the fps?
+    // Currently averaging frames... Probably better solutions but I did it for the pretty
     fps.innerHTML = f + " fps"
 
     drawGrid();
@@ -95,12 +89,14 @@ window.addEventListener('mouseup', function (e) {
 })
 window.addEventListener('resize', resize)
 button.addEventListener('click', function (e) {
+    e.stopPropagation()
     var xhr = new XMLHttpRequest()
     xhr.open("POST", '/astar', true)
     xhr.setRequestHeader('Content-Type', 'application/json')
     m = new Object();
     let start = []
     let end = []
+    // Convert 1D grid array to 2D Array (Y, X) so astar.py can use it
     for (let i = 0; i < grid.length; i++) {
         const e = grid[i];
         var ind = Math.floor(i / pixelsX)
@@ -110,8 +106,7 @@ button.addEventListener('click', function (e) {
         else m[ind].push(e[4])
     }
     m = Object.values(m) // format: y, x
-    // console.log(start, end)
-    // console.log(m)
+    console.log(m)
     xhr.send(JSON.stringify({
         "m": m,
         "start": start,
@@ -120,12 +115,11 @@ button.addEventListener('click', function (e) {
 
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4) {
-            // console.log(xhr.responseText)
             j = JSON.parse(xhr.responseText)
+            // Converting to 1D on backend is not pretty but it works
             path = j['path']
             explored = j['explored']
             o = j['open']
-            // console.log(path)
         }
     }
     var origColor = button.style.backgroundColor
@@ -137,9 +131,4 @@ button.addEventListener('click', function (e) {
     }, 300)
 
 })
-// slider.ondrag
-slider.onchange = () => {
-    brushSize = slider.value
-    // slider.text
-    // console.log(slider.value)
-}
+slider.onchange = () => brushSize = slider.value
