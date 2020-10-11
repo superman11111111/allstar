@@ -6,9 +6,9 @@ const slider = document.getElementById('slider')
 const options = document.getElementById('options')
 
 const fps = document.getElementById('fps')
-const pixelSize = 8
-const gridSize = 1 // Setting this to 0 crashes firefox (bug?)
-const padding = 0
+const pixelSize = 32
+const gridSize = 10 // Setting this to 0 crashes firefox (bug?)
+const padding = 2
 let brushSize = 2
 let frame = 0
 let start = Date.now()
@@ -25,8 +25,8 @@ var o = []
 const resize = () => {
     width = window.innerWidth;
     height = window.innerHeight;
-    pixelsY = Math.floor(height / ((pixelSize + padding) * gridSize))
-    pixelsX = Math.floor(width / ((pixelSize + padding) * gridSize))
+    pixelsY = Math.floor(height / ((pixelSize + padding) * (10 - gridSize)))
+    pixelsX = Math.floor(width / ((pixelSize + padding) * (10 - gridSize)))
     // console.log(pixelsX, pixelsY)
     canvas.width = width
     canvas.height = height
@@ -55,11 +55,11 @@ const drawGrid = () => {
         ctx.globalAlpha = 1;
         ctx.fillStyle = "#222"
         if (grid[i][4]) ctx.fillStyle = "#000"
-        if (i == pixelsX + 1) { ctx.fillStyle = "#0ff"; startPx = i }
-        if (i == grid.length - pixelsX - 2) { ctx.fillStyle = "#0ff"; endPx = i }
         if (explored.includes(i)) ctx.fillStyle = "#0f0"
         if (o.includes(i)) ctx.fillStyle = "#00f"
         if (path.includes(i)) ctx.fillStyle = "#ff0"
+        if (i == grid.length - pixelsX - 2) { ctx.fillStyle = "#0ff"; endPx = i }
+        if (i == pixelsX + 1) { ctx.fillStyle = "#0ff"; startPx = i }
         ctx.fillRect(grid[i][0], grid[i][1], grid[i][2], grid[i][3]);
     }
 }
@@ -106,7 +106,7 @@ button.addEventListener('click', function (e) {
         else m[ind].push(e[4])
     }
     m = Object.values(m) // format: y, x
-    console.log(m)
+    // console.log(m)
     xhr.send(JSON.stringify({
         "m": m,
         "start": start,
@@ -120,6 +120,7 @@ button.addEventListener('click', function (e) {
             path = j['path']
             explored = j['explored']
             o = j['open']
+            console.log(path, explored, o)
         }
     }
     var origColor = button.style.backgroundColor
