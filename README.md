@@ -16,6 +16,10 @@ Web based GUI where one can draw an obstacle and the program finds the quickest 
 
 (+extra nice visualsation)
 
+### Bugs:
+
+* Black screen + no work; why? ???
+
 ### ToDo:
 
 * Remove 2D to 1D conversion by implementing 2D grid solution for JS UI

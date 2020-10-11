@@ -7,7 +7,7 @@ const options = document.getElementById('options')
 
 const fps = document.getElementById('fps')
 const pixelSize = 32
-const gridSize = 10 // Setting this to 0 crashes firefox (bug?)
+const gridSize = 10
 const padding = 2
 let brushSize = 2
 let frame = 0
